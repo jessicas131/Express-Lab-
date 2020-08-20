@@ -1,23 +1,42 @@
-const GaStudent = require('../models/skill')
-// GaStudent now = module.exports in models/skill
+const Skill = require('../models/skill');
+// codingSkills now = module.exports in models/skill
 
 function index(req, res) {
     res.render('skills/index', {
-        cohort: GaStudent.students
+        skills: Skill.getAll()
     });
+}
+
+function newSkill(req, res) {
+    res.render('skills/new')
 }
 
 function show(req, res) {
     res.render('skills/show', {
-        expertise: GaStudent.getSkill(req.params.language),
-        expert: req.params.language
+        skill: Skill.getOne(req.params.id),
+        skillNum: req.params.id
     })
+}
+
+function create(req, res) {
+    Skill.create(req.body);
+    res.redirect('/skills')
+}
+
+function deleteSkill(req, res) {
+    Skill.deleteOne(req.params.id);
+    res.redirect('/skills');
 }
 
 module.exports = {
     index,
-    show
+    show,
+    new: newSkill,
+    create,
+    delete: deleteSkill
 }
+
+
 
 //rendered the ejs file 
 // how we were able to make it like url-able 
